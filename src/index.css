@@ -3,6 +3,26 @@
 
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Manrope:wght@400;500;600;700&display=swap');
 
+  /* Global reset — without this, the browser's default 8px body margin
+     and white background show as thin white lines around the page. */
+  html, body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background: #07080a;
+    overflow-x: hidden;
+  }
+  #root{ min-height: 100vh; width: 100%; background: #07080a; }
+  *, *::before, *::after{ box-sizing: border-box; }
+
+  /* Dark scrollbar — Windows/Chrome's default light scrollbar can look
+     like a stray white line on the right edge of a dark page. */
+  ::-webkit-scrollbar{ width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track{ background: #07080a; }
+  ::-webkit-scrollbar-thumb{ background: #262b35; border-radius: 0; }
+  ::-webkit-scrollbar-thumb:hover{ background: #4fd8ff; }
+  html{ scrollbar-color: #262b35 #07080a; scrollbar-width: thin; }
+
   .apex-root{
     --bg: #07080a;
     --bg-deep: #0b0e14;
@@ -240,6 +260,28 @@
   .apex-info-row b{ display:block; font-size:14px; margin-bottom:3px; }
   .apex-info-row span{ color: var(--muted); font-size:13.5px; }
   .apex-form{ background: var(--surface); border:1px solid var(--line); padding: var(--sp-5); }
+  .apex-contact-cta{ background: var(--surface); border:1px solid var(--line); padding: var(--sp-5); display:flex; flex-direction:column; justify-content:center; gap: var(--sp-3); }
+  .apex-contact-cta h3{ font-size:22px; text-transform:none; letter-spacing:0; font-weight:800; }
+  .apex-contact-cta p{ color: var(--muted); font-size:15px; }
+
+  /* ---- BOOKING MODAL ---- */
+  @keyframes apex-modal-fade{ from{ opacity:0; } to{ opacity:1; } }
+  @keyframes apex-modal-pop{ from{ transform: scale(.94) translateY(12px); opacity:0; } to{ transform: scale(1) translateY(0); opacity:1; } }
+  .apex-modal-overlay{
+    position:fixed; inset:0; z-index:200; background: rgba(5,6,8,0.72); backdrop-filter: blur(6px);
+    display:flex; align-items:center; justify-content:center; padding: 20px;
+    animation: apex-modal-fade .2s ease;
+  }
+  .apex-modal-card{
+    position:relative; width:100%; max-width: 460px; max-height: 90vh; overflow-y:auto;
+    background: var(--surface); border:1px solid var(--electric-dim); padding: var(--sp-5);
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    animation: apex-modal-pop .28s cubic-bezier(.34,1.56,.64,1);
+  }
+  .apex-modal-close{ position:absolute; top:16px; right:16px; background:none; border:none; color: var(--muted); cursor:pointer; padding:4px; transition: color .15s ease; }
+  .apex-modal-close:hover{ color: var(--electric); }
+  .apex-modal-title{ font-size:24px; margin-bottom: var(--sp-2); padding-right: 28px; }
+  .apex-modal-sub{ color: var(--muted); font-size:14.5px; margin-bottom: var(--sp-4); }
   .apex-field{ margin-bottom: var(--sp-3); }
   .apex-field label{ display:block; font-size:12.5px; color: var(--muted); margin-bottom:7px; }
   .apex-field input, .apex-field select, .apex-field textarea{ width:100%; background: var(--surface-2); border:1px solid var(--line); padding:13px 14px; color: var(--chrome); font-family:'Manrope'; font-size:14.5px; }

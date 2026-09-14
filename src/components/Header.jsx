@@ -3,9 +3,14 @@ import { Menu, X, Phone } from "lucide-react";
 import { NAV_ITEMS, STUDIO } from "../data/content";
 import { useScrollToSection } from "../hooks/useScrollToSection";
 
-export default function Header() {
+export default function Header({ onBook }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const scrollToSection = useScrollToSection(() => setMenuOpen(false));
+
+  const handleBook = () => {
+    setMenuOpen(false);
+    onBook();
+  };
 
   return (
     <>
@@ -29,9 +34,9 @@ export default function Header() {
             <span>{STUDIO.phoneDisplay}</span>
           </a>
 
-          <a href="#contact" className="apex-nav-cta" onClick={(e) => scrollToSection(e, "contact")}>
+          <button type="button" className="apex-nav-cta" onClick={handleBook}>
             Забронювати слот
-          </a>
+          </button>
 
           <button className="apex-burger" aria-label="Меню" onClick={() => setMenuOpen((v) => !v)}>
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -49,13 +54,9 @@ export default function Header() {
                 {item.label}
               </a>
             ))}
-            <a
-              href="#contact"
-              className="apex-btn-primary apex-mobile-cta"
-              onClick={(e) => scrollToSection(e, "contact")}
-            >
+            <button type="button" className="apex-btn-primary apex-mobile-cta" onClick={handleBook}>
               Забронювати слот
-            </a>
+            </button>
           </div>
         )}
       </header>

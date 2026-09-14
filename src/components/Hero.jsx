@@ -1,6 +1,6 @@
 import { useScrollToSection } from "../hooks/useScrollToSection";
 
-export default function Hero() {
+export default function Hero({ onBook }) {
   const scrollToSection = useScrollToSection();
 
   return (
@@ -22,9 +22,9 @@ export default function Hero() {
           </p>
 
           <div className="apex-hero-actions">
-            <a href="#contact" className="apex-btn-primary" onClick={(e) => scrollToSection(e, "contact")}>
+            <button type="button" className="apex-btn-primary" onClick={() => onBook()}>
               Забронювати слот
-            </a>
+            </button>
             <a href="#pricing" className="apex-btn-ghost" onClick={(e) => scrollToSection(e, "pricing")}>
               Дивитись прайс
             </a>

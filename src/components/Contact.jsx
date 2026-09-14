@@ -1,10 +1,7 @@
-import { useState } from "react";
-import { MapPin, Phone, Clock, CheckCircle2 } from "lucide-react";
+import { MapPin, Phone, Clock } from "lucide-react";
 import { STUDIO } from "../data/content";
 
-export default function Contact() {
-  const [submitted, setSubmitted] = useState(false);
-
+export default function Contact({ onBook }) {
   return (
     <section id="contact" className="apex-wrap apex-section">
       <div className="apex-contact-wrap">
@@ -38,37 +35,12 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="apex-form">
-          {!submitted ? (
-            <div>
-              <div className="apex-field">
-                <label htmlFor="apex-name">Ім'я</label>
-                <input id="apex-name" type="text" placeholder="Як до вас звертатись" />
-              </div>
-              <div className="apex-field">
-                <label htmlFor="apex-phone">Телефон</label>
-                <input id="apex-phone" type="tel" placeholder="+380" />
-              </div>
-              <div className="apex-field">
-                <label htmlFor="apex-note">Коментар (за потреби)</label>
-                <textarea id="apex-note" rows={3} placeholder="Марка, модель авто, побажання" />
-              </div>
-              <button type="button" className="apex-submit-btn" onClick={() => setSubmitted(true)}>
-                Забронювати слот
-              </button>
-              <p className="apex-form-note">Передзвонимо протягом 30 хвилин у робочий час</p>
-            </div>
-          ) : (
-            <div className="apex-form-success">
-              <CheckCircle2 />
-              <h3 style={{ textTransform: "none", fontSize: 19, letterSpacing: 0, marginBottom: 8 }}>
-                Заявку надіслано
-              </h3>
-              <p style={{ color: "var(--muted)", fontSize: 14.5 }}>
-                Ми зв'яжемось із вами найближчим часом.
-              </p>
-            </div>
-          )}
+        <div className="apex-contact-cta">
+          <h3>Готові записатись?</h3>
+          <p>Заповніть коротку форму — передзвонимо протягом 30 хвилин у робочий час і підберемо зручний слот.</p>
+          <button type="button" className="apex-submit-btn" onClick={() => onBook()}>
+            Забронювати слот
+          </button>
         </div>
       </div>
     </section>

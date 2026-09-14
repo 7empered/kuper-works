@@ -1,9 +1,6 @@
 import { PRICING } from "../data/content";
-import { useScrollToSection } from "../hooks/useScrollToSection";
 
-export default function Pricing() {
-  const scrollToSection = useScrollToSection();
-
+export default function Pricing({ onBook }) {
   return (
     <section id="pricing" className="apex-wrap apex-section">
       <div className="apex-section-head">
@@ -24,14 +21,14 @@ export default function Pricing() {
                 <li key={item}>{item}</li>
               ))}
             </ul>
-            <a
-              href="#contact"
+            <button
+              type="button"
               className={tier.highlight ? "apex-btn-primary" : "apex-btn-outline"}
-              style={{ textAlign: "center" }}
-              onClick={(e) => scrollToSection(e, "contact")}
+              style={{ textAlign: "center", width: "100%" }}
+              onClick={() => onBook(`Цікавить тариф «${tier.tier}»`)}
             >
               Обрати
-            </a>
+            </button>
           </div>
         ))}
       </div>

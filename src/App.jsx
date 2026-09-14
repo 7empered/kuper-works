@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Marquee from "./components/Marquee";
@@ -8,20 +9,31 @@ import Pricing from "./components/Pricing";
 import Testimonials from "./components/Testimonials";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import BookingModal from "./components/BookingModal";
 
 export default function App() {
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const [bookingNote, setBookingNote] = useState("");
+
+  const openBooking = (note = "") => {
+    setBookingNote(note);
+    setBookingOpen(true);
+  };
+  const closeBooking = () => setBookingOpen(false);
+
   return (
     <div className="apex-root">
-      <Header />
-      <Hero />
+      <Header onBook={openBooking} />
+      <Hero onBook={openBooking} />
       <Marquee />
       <Services />
       <Process />
       <Compare />
-      <Pricing />
+      <Pricing onBook={openBooking} />
       <Testimonials />
-      <Contact />
+      <Contact onBook={openBooking} />
       <Footer />
+      <BookingModal open={bookingOpen} initialNote={bookingNote} onClose={closeBooking} />
     </div>
   );
 }
