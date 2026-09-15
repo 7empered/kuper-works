@@ -10,8 +10,11 @@ import Testimonials from "./components/Testimonials";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import BookingModal from "./components/BookingModal";
+import { useSmoothWheelScroll } from "./hooks/useSmoothWheelScroll";
 
 export default function App() {
+  useSmoothWheelScroll();
+
   const [bookingOpen, setBookingOpen] = useState(false);
   const [bookingNote, setBookingNote] = useState("");
 

@@ -1,6 +1,11 @@
 const HEADER_OFFSET = 90;
 const DURATION = 700;
 
+// Tracks the in-flight animation so a new click (or a rapid double click)
+// cancels the previous one instead of the two fighting over `scrollTo`,
+// which is what produced the "abrupt jump" behaviour.
+let activeRafId = null;
+
 /**
  * Animates the window scroll position to a target element.
  *
@@ -11,12 +16,26 @@ const DURATION = 700;
 function animatedScrollTo(el) {
   if (!el) return;
 
+  if (activeRafId !== null) {
+    cancelAnimationFrame(activeRafId);
+    activeRafId = null;
+  }
+
   const reduceMotion =
     window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const startScroll = window.scrollY;
-  const targetScroll = startScroll + el.getBoundingClientRect().top - HEADER_OFFSET;
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  const targetScroll = Math.max(
+    0,
+    Math.min(startScroll + el.getBoundingClientRect().top - HEADER_OFFSET, maxScroll)
+  );
 
+  // NOTE: if this still jumps instead of animating, check whether your
+  // browser/OS has "reduce motion" turned on (e.g. Chrome DevTools ->
+  // Rendering tab -> "Emulate CSS media feature prefers-reduced-motion",
+  // or the OS-level accessibility setting). That's the only code path
+  // that skips the animation below.
   if (reduceMotion) {
     window.scrollTo(0, targetScroll);
     return;
@@ -28,9 +47,13 @@ function animatedScrollTo(el) {
   const step = (now) => {
     const progress = Math.min((now - startTime) / DURATION, 1);
     window.scrollTo(0, startScroll + (targetScroll - startScroll) * easeInOutQuad(progress));
-    if (progress < 1) requestAnimationFrame(step);
+    if (progress < 1) {
+      activeRafId = requestAnimationFrame(step);
+    } else {
+      activeRafId = null;
+    }
   };
-  requestAnimationFrame(step);
+  activeRafId = requestAnimationFrame(step);
 }
 
 /**

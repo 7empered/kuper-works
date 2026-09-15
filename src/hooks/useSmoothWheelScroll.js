@@ -39,11 +39,25 @@ export function useSmoothWheelScroll({ ease = 0.12 } = {}) {
       rafId = requestAnimationFrame(step);
     };
 
+    // Normalize deltaY to pixels. Some browsers/mice report wheel deltas
+    // in "lines" (deltaMode 1) or full "pages" (deltaMode 2) instead of
+    // pixels (deltaMode 0) - without this, scrolling on those devices
+    // barely moves the page at all, which looks like it's "not working".
+    const normalizeDelta = (e) => {
+      if (e.deltaMode === 1) return e.deltaY * 16; // line mode
+      if (e.deltaMode === 2) return e.deltaY * window.innerHeight * 0.9; // page mode
+      return e.deltaY;
+    };
+
     const onWheel = (e) => {
       if (isInsideScrollable(e.target)) return; // let nested scroll areas behave normally
 
+      // Don't hijack the wheel while something (e.g. the booking modal)
+      // has locked page scroll via body { overflow: hidden }.
+      if (window.getComputedStyle(document.body).overflowY === "hidden") return;
+
       e.preventDefault();
-      target = Math.max(0, Math.min(target + e.deltaY, maxScroll()));
+      target = Math.max(0, Math.min(target + normalizeDelta(e), maxScroll()));
 
       if (!animating) {
         animating = true;
